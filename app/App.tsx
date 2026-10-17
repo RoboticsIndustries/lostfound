@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Text, TextInput, Pressable, FlatList, Image, ScrollView, Alert, StyleSheet, Switch } from 'react-native';
+import { Platform, SafeAreaView, View, Text, TextInput, Pressable, FlatList, Image, ScrollView, Alert, StyleSheet, Switch } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { decode } from 'base64-arraybuffer';
 import { Session } from '@supabase/supabase-js';
 import { supabase, CATEGORIES, Item } from './lib/supabase';
+
+// Alert pop-ups are a no-op on web; route them to window.alert so errors are visible.
+if (Platform.OS === 'web') {
+  Alert.alert = ((title: string, msg?: string) =>
+    window.alert([title, msg].filter(Boolean).join('\n\n'))) as typeof Alert.alert;
+}
 
 type Tab = 'browse' | 'lost' | 'log';
 
@@ -38,6 +44,7 @@ export default function App() {
       </View>
       {tab === 'browse' && <Browse />}
       {tab === 'lost' && schoolId && <LostReport schoolId={schoolId} userId={session.user.id} />}
+      {tab !== 'browse' && !schoolId && <Text style={s.muted}>Your account isn't linked to a school yet. Ask your school admin to add you.</Text>}
       {tab === 'log' && staff && schoolId && <LogItem schoolId={schoolId} userId={session.user.id} />}
       <Pressable onPress={() => supabase.auth.signOut()}><Text style={s.link}>Sign out</Text></Pressable>
     </SafeAreaView>
