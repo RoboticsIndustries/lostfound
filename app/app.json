@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "Lost & Found",
+    "slug": "lostfound",
+    "web": {
+      "name": "Lost & Found",
+      "shortName": "Lost & Found",
+      "themeColor": "#1f4ed8",
+      "backgroundColor": "#f7f7f5"
+    }
+  }
+}

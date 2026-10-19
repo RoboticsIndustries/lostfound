@@ -3,3 +3,7 @@ node_modules/
 .env
 *.log
 .DS_Store
+server/bin/
+server/pb_data/
+server/pb_public/
+dist/
